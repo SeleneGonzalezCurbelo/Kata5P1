@@ -9,24 +9,13 @@ public class Kata5P1 {
 
     public static void main(String[] args) {
         createNewTable();
-        
-        /*InsertarDatosTabla idt = new InsertarDatosTabla();
-        idt.insert(1, "Alberto", "García", "DIS");
-        idt.insert(2, "María", "Montes", "DUI");
-        idt.insert(3, "Luisa", "Cabello", "DMA");
-        */
         connect(); 
-        
-        SelectApp app = new SelectApp();
-        app.selectAll();
     }
     
     private static void connect() {
         Connection conn = null;
         try {
-            // parámetros de la BD
             String url = "jdbc:sqlite:KATA5.db";
-            // creamos una conexión a la BD
             conn = DriverManager.getConnection(url);
             System.out.println("Connexión a SQLite establecida");
         } catch (SQLException e) {
