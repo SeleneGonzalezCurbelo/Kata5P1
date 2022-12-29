@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package control;
 
 import java.sql.Connection;
@@ -27,18 +22,22 @@ public class InsertarDatosTabla {
 
     public void insert(List<String> mails) {
         String sql = "INSERT INTO EMAIL(Mail) VALUES(?)";
-        try (Connection conn = this.connect();
-            PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                mails.forEach((i) -> {
-                    try {
-                        pstmt.setString(1, i);
-                        pstmt.executeUpdate();
-                    } catch (SQLException ex) {
-                        Logger.getLogger(InsertarDatosTabla.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                });
+        Connection conn = this.connect();
+        if (conn == null) {
+            System.out.println("Error al conectar a la base de datos");
+            return;
+        }
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            mails.forEach((i) -> {
+                try {
+                    pstmt.setString(1, i);
+                    pstmt.executeUpdate();
+                } catch (SQLException ex) {
+                    Logger.getLogger(InsertarDatosTabla.class.getName()).log(Level.SEVERE, "Error al insertar el mail " + i + " en la base de datos", ex);
+                }
+            });
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            Logger.getLogger(InsertarDatosTabla.class.getName()).log(Level.SEVERE, "Error al conectarse a la base de datos", e);
         }
     }
 }
